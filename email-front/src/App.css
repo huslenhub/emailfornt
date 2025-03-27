@@ -1,0 +1,87 @@
+/* 전체 화면 스타일 */
+*{
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: "Arial", sans-serif;
+  background-color: #3e2723; /* 다크 브라운 */
+  color: #f5f5f5; /* 연한 크림색 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; /* 뷰포트 전체 높이 */
+}
+
+/* 중앙 컨테이너 */
+.container {
+  background-color: #5d4037; /* 중간 브라운 */
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  width: 100%;
+  max-width: 400px;
+  text-align: center;
+}
+
+/* 제목 스타일 */
+h2 {
+  margin-bottom: 20px;
+  color: #d7ccc8; /* 밝은 브라운 */
+}
+
+/* 입력 필드 스타일 */
+input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: none;
+  border-radius: 5px;
+  background-color: #795548; /* 브라운 톤 */
+  color: #fff;
+  font-size: 16px;
+}
+
+textarea {
+  width: 100%;
+  height: 300px; /* 🔹 기본 높이를 5배로 증가 */
+  padding: 10px;
+  margin-bottom: 15px;
+  border: none;
+  border-radius: 5px;
+  background-color: #795548; /* 브라운 톤 */
+  color: #fff;
+  font-size: 16px;
+  resize: vertical; /* 🔹 사용자가 크기 조절 가능 */
+}
+
+input::placeholder, textarea::placeholder {
+  color: #d7ccc8; /* 연한 브라운 */
+}
+
+/* 버튼 스타일 */
+button {
+  width: 100%;
+  padding: 12px;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  background-color: #3e2723; /* 진한 브라운 */
+  color: #fff;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #2e1c19; /* 더 어두운 브라운 */
+}
+
+/* 응답 메시지 스타일 */
+.response-message {
+  margin-top: 15px;
+  font-size: 14px;
+  color: #d7ccc8; /* 밝은 브라운 */
+}
