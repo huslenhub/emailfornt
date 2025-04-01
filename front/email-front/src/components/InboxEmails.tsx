@@ -15,21 +15,9 @@ const InboxEmails = () => {
   useEffect(() => {
     fetch("http://localhost:8080/email/inbox")
       .then((res) => {
-        console.log("✅ 응답 상태 코드:", res.status);
         return res.json();
       })
       .then((data) => {
-        console.log("📥 받은 메일 원본 데이터:", data);
-
-        // 개별 이메일 정보 출력
-        data.forEach((email: Email, index: number) => {
-          console.log(`📩 [${index + 1}] Email`);
-          console.log("📨 From:", email.from);
-          console.log("📌 Subject:", email.subject);
-          console.log("📅 Date:", email.date);
-          console.log("-------------------------------");
-        });
-
         setEmails(data);
       })
       .catch((error) => console.error("❌ Error fetching inbox emails:", error));

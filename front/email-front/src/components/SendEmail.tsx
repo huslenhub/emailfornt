@@ -50,8 +50,7 @@ const SendEmail = () => {
         throw new Error("메일 전송 실패");
       }
 
-      const emailId = await response.text(); // 서버에서 반환된 메일 ID
-      console.log("📩 이메일 전송 성공, ID:", emailId);
+    
       alert("메일 전송 성공!");
 
       // 서버 응답 받은 후 보낸 메일 목록으로 이동

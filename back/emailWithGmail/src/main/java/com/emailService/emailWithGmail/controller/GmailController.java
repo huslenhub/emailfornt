@@ -3,6 +3,7 @@ package com.emailService.emailWithGmail.controller;
 import com.emailService.emailWithGmail.service.GmailInbox;
 import com.emailService.emailWithGmail.service.Gmailsend;
 import com.emailService.emailWithGmail.service.GmailOutbox;
+import com.emailService.emailWithGmail.service.GmailUserName;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,12 +18,14 @@ public class GmailController {
     private final Gmailsend gmailsend;
     private final GmailOutbox gmailOutbox;
     private final GmailInbox gmailInbox;
+    private final GmailUserName gmailUserName;
 
-
-    public GmailController(Gmailsend gmailService, GmailInbox gmailInbox, GmailOutbox gmailOutbox) {
+    public GmailController(Gmailsend gmailService, GmailInbox gmailInbox, GmailOutbox gmailOutbox, GmailUserName gmailUserName) {
         this.gmailsend = gmailService;
         this.gmailInbox = gmailInbox;
         this.gmailOutbox = gmailOutbox;
+        this.gmailUserName = gmailUserName;  // 변수 초기화
+
     }
 
     @PostMapping(value = "/send", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
@@ -54,6 +57,16 @@ public class GmailController {
             return ResponseEntity.ok(gmailOutbox.getOutboxEmails());
         } catch (Exception e) {
             return ResponseEntity.status(500).body(null);
+        }
+    }
+    @GetMapping("/user")
+    public ResponseEntity<String> getRecentEmailSender() {
+        try {
+            System.out.println("recent-email-sender");
+            String emailSender = gmailUserName.getRecentEmailSender();
+            return ResponseEntity.ok(emailSender); // 이메일 주소를 문자열로 반환
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("오류 발생: " + e.getMessage());
         }
     }
 }

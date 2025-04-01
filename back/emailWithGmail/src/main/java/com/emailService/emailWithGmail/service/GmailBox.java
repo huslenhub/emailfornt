@@ -6,6 +6,8 @@ import com.google.api.services.gmail.model.Message;
 import com.google.api.services.gmail.model.MessagePart;
 import com.google.api.services.gmail.model.MessagePartHeader;
 import org.springframework.stereotype.Service;
+
+import java.io.IOException;
 import java.util.*;
 
 @Service
@@ -86,5 +88,24 @@ public class GmailBox {
 
     private String decodeBase64(String encodedText) {
         return new String(Base64.getUrlDecoder().decode(encodedText));
+    }
+
+    public String getRecentEmailSender() throws IOException {
+        // Gmail API를 사용하여 최근 받은 이메일 가져오기
+        List<Message> messages = gmail.users().messages().list("me").setMaxResults(1L).setQ("is:inbox").execute().getMessages();
+        if (messages == null || messages.isEmpty()) {
+            return "최근 이메일 없음";
+        }
+
+        Message message = gmail.users().messages().get("me", messages.get(0).getId()).execute();
+        List<MessagePartHeader> headers = message.getPayload().getHeaders();
+
+        for (MessagePartHeader header : headers) {
+            if ("From".equalsIgnoreCase(header.getName())) {
+                System.out.println(header.getValue());
+                return header.getValue(); // 발신자 정보 반환
+            }
+        }
+        return "발신자 정보 없음";
     }
 }
