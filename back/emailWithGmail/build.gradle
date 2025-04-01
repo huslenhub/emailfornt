@@ -1,0 +1,38 @@
+plugins {
+	id 'java'
+	id 'org.springframework.boot' version '3.4.4'
+	id 'io.spring.dependency-management' version '1.1.7'
+}
+
+group = 'com.emailService'
+version = '0.0.1-SNAPSHOT'
+
+java {
+	toolchain {
+		languageVersion = JavaLanguageVersion.of(17)
+	}
+}
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+	implementation 'com.google.api-client:google-api-client:2.0.0'
+	implementation 'com.google.oauth-client:google-oauth-client-jetty:1.34.1'
+	implementation 'com.google.apis:google-api-services-gmail:v1-rev20220404-2.0.0'
+	implementation 'javax.mail:mail:1.4.7'
+
+	// ✅ Google HTTP Client (NetHttpTransport가 포함됨)
+	implementation 'com.google.http-client:google-http-client:1.43.3'
+	implementation 'com.google.http-client:google-http-client-gson:1.43.3'
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}
