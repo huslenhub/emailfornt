@@ -19,9 +19,9 @@ public class GmailBox {
         this.gmail = gmail;
     }
 
-    public List<Map<String, String>> getEmails(String label) throws Exception {
+    public List<Map<String, Object>> getEmails(String label) throws Exception {
 
-        List<Map<String, String>> emailsList = new ArrayList<>();
+        List<Map<String, Object>> emailsList = new ArrayList<>();
 
         ListMessagesResponse response;
 
@@ -46,15 +46,25 @@ public class GmailBox {
 
             String target = label.equals("INBOX") ? getHeader(fullMessage, "From") : getHeader(fullMessage, "To");
             String subject = getHeader(fullMessage, "Subject");
-            String date = getHeader(fullMessage, "Date").replaceAll(" \\-\\d{4}", "");
+            String date = getHeader(fullMessage, "Date").replaceAll(" -\\d{4}", "");
             String body = getBody(fullMessage);
 
-            Map<String, String> emailData = new HashMap<>();
+            List<Map<String, String>> attachments = getAttachments(fullMessage);
+
+            List<String> attachmentLinks = new ArrayList<>();
+            for (Map<String, String> attachment : attachments) {
+                attachmentLinks.add(attachment.get("downloadLink"));
+            }
+
+
+            Map<String, Object> emailData = new HashMap<>();
             emailData.put("id", fullMessage.getId());
             emailData.put(label.equals("INBOX") ? "from" : "to", target);
             emailData.put("subject", subject);
             emailData.put("date", date);
             emailData.put("body", body);
+            emailData.put("attachments", attachmentLinks);
+
 
             emailsList.add(emailData);
         }
@@ -85,6 +95,20 @@ public class GmailBox {
         }
         return "No Body content";
     }
+    private List<Map<String, String>> getAttachments(Message message) {
+        List<Map<String, String>> attachments = new ArrayList<>();
+        if (message.getPayload().getParts() != null) {
+            for (MessagePart part : message.getPayload().getParts()) {
+                if (part.getFilename() != null && !part.getFilename().isEmpty() && part.getBody() != null && part.getBody().getAttachmentId() != null) {
+                    Map<String, String> attachmentData = new HashMap<>();
+                    attachmentData.put("filename", part.getFilename());
+                    attachmentData.put("downloadLink", "https://mail.google.com/mail/u/0/?ui=2&ik&attid=0.1&th=" + message.getId() + "&view=att&disp=safe");
+                    attachments.add(attachmentData);
+                }
+            }
+        }
+        return attachments;
+    }
 
     private String decodeBase64(String encodedText) {
         return new String(Base64.getUrlDecoder().decode(encodedText));
@@ -102,7 +126,6 @@ public class GmailBox {
 
         for (MessagePartHeader header : headers) {
             if ("From".equalsIgnoreCase(header.getName())) {
-                System.out.println(header.getValue());
                 return header.getValue(); // 발신자 정보 반환
             }
         }

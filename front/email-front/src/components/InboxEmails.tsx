@@ -6,6 +6,7 @@ interface Email {
   subject: string;
   date: string;
   body: string;
+  attachments: string[]; 
 }
 
 const InboxEmails = () => {
@@ -51,6 +52,20 @@ const InboxEmails = () => {
             <p><strong>Date:</strong> {selectedEmail.date}</p>
             <hr />
             <pre className="email-body">{selectedEmail.body}</pre>
+            {selectedEmail.attachments.length > 0 && (
+              <>
+                <h4>📎 Attachments:</h4>
+                <ul className="attachment-list">
+                  {selectedEmail.attachments.map((link, idx) => (
+                    <li key={idx}>
+                      <a href={link} target="_blank" rel="noopener noreferrer">
+                        Download Attachment {idx + 1}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </>
+            )}
           </div>
         </div>
       )}

@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Map;
 
+
 @Service
 public class GmailOutbox {
     private final GmailBox gmailBox;
@@ -12,7 +13,7 @@ public class GmailOutbox {
         this.gmailBox = gmailBox;
     }
 
-    public List<Map<String, String>> getOutboxEmails() throws Exception {
+    public List<Map<String, Object>> getOutboxEmails() throws Exception {
         return gmailBox.getEmails("SENT");
     }
 }

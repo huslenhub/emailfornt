@@ -43,7 +43,7 @@ public class GmailController {
     }
 
     @GetMapping("/inbox")
-    public ResponseEntity<List<Map<String, String>>> getInboxEmails() {
+    public ResponseEntity<List<Map<String, Object>>> getInboxEmails() {
         try {
             return ResponseEntity.ok(gmailInbox.getInboxEmails());
         } catch (Exception e) {
@@ -52,7 +52,7 @@ public class GmailController {
     }
 
     @GetMapping("/sent")
-    public ResponseEntity<List<Map<String, String>>> getSentEmails() {
+    public ResponseEntity<List<Map<String, Object>>> getSentEmails() {
         try {
             return ResponseEntity.ok(gmailOutbox.getOutboxEmails());
         } catch (Exception e) {
@@ -62,7 +62,7 @@ public class GmailController {
     @GetMapping("/user")
     public ResponseEntity<String> getRecentEmailSender() {
         try {
-            System.out.println("recent-email-sender");
+
             String emailSender = gmailUserName.getRecentEmailSender();
             return ResponseEntity.ok(emailSender); // 이메일 주소를 문자열로 반환
         } catch (Exception e) {

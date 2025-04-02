@@ -1,20 +1,17 @@
-// src/components/SentEmails.tsx
-
 import { useEffect, useState } from "react";
 import "./SentEmails.css";
 
 interface Email {
-  id: string;  
   to: string;
   subject: string;
   date: string;
   body: string;
+  attachments: string[]; 
 }
 
 const SentEmails = () => {
   const [emails, setEmails] = useState<Email[]>([]);
   const [selectedEmail, setSelectedEmail] = useState<Email | null>(null);
-
 
   useEffect(() => {
     fetch("http://localhost:8080/email/sent")
@@ -31,8 +28,8 @@ const SentEmails = () => {
     <div className="sent-emails-container">
       <h2>📤 Sent Emails</h2>
       <ul className="email-list">
-        {emails.map((email) => (
-          <li  key={email.id} className="email-item" onClick={() => setSelectedEmail(email)}>
+        {emails.map((email, index) => (
+          <li  key={index} className="email-item" onClick={() => setSelectedEmail(email)}>
             <p>
               <strong>To:</strong> {email.to}
             </p>
@@ -55,6 +52,20 @@ const SentEmails = () => {
             <p><strong>Date:</strong> {selectedEmail.date}</p>
             <hr />
             <pre className="email-body">{selectedEmail.body}</pre>
+            {selectedEmail.attachments.length > 0 && (
+              <>
+                <h4>📎 Attachments:</h4>
+                <ul className="attachment-list">
+                  {selectedEmail.attachments.map((link, idx) => (
+                    <li key={idx}>
+                      <a href={link} target="_blank" rel="noopener noreferrer">
+                        Download Attachment {idx + 1}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </>
+            )}
           </div>
         </div>
       )}

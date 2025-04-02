@@ -12,7 +12,7 @@ public class GmailInbox {
         this.gmailBox = gmailBox;
     }
 
-    public List<Map<String, String>> getInboxEmails() throws Exception {
+    public List<Map<String, Object>> getInboxEmails() throws Exception {
         return gmailBox.getEmails("INBOX");
     }
 }
